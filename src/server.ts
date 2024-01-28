@@ -1,6 +1,8 @@
 import { corsConfig } from './config/configOptions';
+import { Cinemas, Times } from './constants/default-data.const';
 import { AuthRouter } from './routes/auth.route';
 import { MoviesRouter } from './routes/movies.route';
+import { Cinema } from './schemas/cinema.schema';
 import { Time } from './schemas/time.schema';
 
 
@@ -19,3 +21,22 @@ app.listen(port, () => {
 
 app.use('/api/v1/', AuthRouter);
 app.use('/api/v1/', MoviesRouter);
+
+async function createCinema(cinema) {
+  try {
+    await Cinema.findOrCreate(cinema);
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+}
+
+async function createTime(time) {
+  try {
+    await Time.findOrCreate(time);
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+}
+
+// Cinemas.forEach((cinema, i) => createCinema({...cinema, id: i + 1}));
+// Times.forEach((time, i) => createTime({...time, id: i + 1}));
